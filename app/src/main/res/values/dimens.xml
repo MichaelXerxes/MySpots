@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="standard_1">16dp</dimen>
+    <dimen name="main_content_padding">5dp</dimen>
+    <dimen name="edit_text_standard">22sp</dimen>
+    <dimen name="add_picture_image_size">170dp</dimen>
+    <dimen name="image_padding_size">3dp</dimen>
+    <dimen name="text_view_image_standard_size">22sp</dimen>
+    <dimen name="image_margin_top">20dp</dimen>
+    <dimen name="btn_save_text_size">25sp</dimen>
+</resources>
