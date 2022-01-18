@@ -8,4 +8,7 @@
     <dimen name="text_view_image_standard_size">22sp</dimen>
     <dimen name="image_margin_top">20dp</dimen>
     <dimen name="btn_save_text_size">25sp</dimen>
+    <dimen name="add_picture_image_size_for_camera">300dp</dimen>
+    <dimen name="btn_camera_text_size">28sp</dimen>
+    <dimen name="btn_camera_padding_size">10dp</dimen>
 </resources>

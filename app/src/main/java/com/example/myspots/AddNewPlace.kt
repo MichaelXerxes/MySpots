@@ -1,12 +1,27 @@
 package com.example.myspots
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.media.audiofx.Equalizer
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
+import android.widget.Toast
+
 import com.example.myspots.databinding.ActivityAddNewPlaceBinding
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import java.security.Permission
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.jar.Manifest
 
 class AddNewPlace : AppCompatActivity(), View.OnClickListener {
     private var binding:ActivityAddNewPlaceBinding?=null
@@ -26,9 +41,10 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
             calendar.set(Calendar.YEAR,year)
             calendar.set(Calendar.MONTH,month)
             calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth)
-            UpdateDateEditText()
+            updateDateEditText()
         }
         binding?.etDate?.setOnClickListener(this)
+        binding?.tvAddImageID?.setOnClickListener(this)
 
     }
 
@@ -41,12 +57,66 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
                     calendar.get(Calendar.DAY_OF_MONTH)).show()
 
             }
+            R.id.tv_add_imageID->{
+                val pictureDialog=AlertDialog.Builder(this)
+                pictureDialog.setTitle("Select Action")
+                val pictureDialogItems= arrayOf("Select photo from Gallery","Capture photo from Camera")
+                pictureDialog.setItems(pictureDialogItems){
+                    dialog,which ->
+                    when(which){
+                        0-> choosePhotoFromGallery()
+
+                        1->{ Toast.makeText(this@AddNewPlace,
+                            "You decided not to ",
+                            Toast.LENGTH_SHORT).show()}
+
+                    }
+                }
+                pictureDialog.show()
+            }
         }
 
     }
-    private fun UpdateDateEditText(){
+    private fun updateDateEditText(){
         val format="dd.MM.yyyy"
         val sdf=SimpleDateFormat(format, Locale.getDefault())
         binding?.etDate?.setText(sdf.format(calendar.time).toString())
+    }
+    private fun choosePhotoFromGallery(){
+        Dexter.withContext(this).withPermissions(
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ).withListener(object : MultiplePermissionsListener{
+            override fun onPermissionsChecked(report:MultiplePermissionsReport){
+                if(report!!.areAllPermissionsGranted()){
+                    Toast.makeText(this@AddNewPlace,
+                    "Storage READ / WRITE permission are granted. You can select an image from Gallery  ",
+                    Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest> ,
+            token: PermissionToken){
+                showRationalDialogForPermissions()
+            }
+        }).onSameThread().check()
+    }
+    private fun showRationalDialogForPermissions(){
+        AlertDialog.Builder(this).setMessage("" +
+                "You have Turned-Off permission required for this feature." +
+                " You can enabled under Application Settings")
+            .setPositiveButton("Go To Settings")
+            { _,_ ->
+                       try {
+                           val intent=Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                           val uri=Uri.fromParts("package",packageName,null)
+                           intent.data=uri
+                           startActivity(intent)
+                       } catch (e: ActivityNotFoundException) {
+                           e.printStackTrace()
+                       }
+            }.setNegativeButton("Cancel"){dialog , _ ->
+                dialog.dismiss()
+        }.show()
+
     }
 }

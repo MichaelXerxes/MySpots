@@ -104,7 +104,7 @@
                     android:textSize="@dimen/edit_text_standard"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/appCompatImageView"
                 android:layout_width="@dimen/add_picture_image_size"
                 android:layout_height="@dimen/add_picture_image_size"
@@ -112,6 +112,8 @@
                 android:layout_marginTop="@dimen/image_margin_top"
                 android:scaleType="centerCrop"
                 android:src="@drawable/camera"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FF000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.116"
                 app:layout_constraintStart_toStartOf="parent"
@@ -138,6 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="68dp"
                 android:gravity="center"
+                android:textColor="@color/black"
                 android:text="@string/btn_save_text"
                 android:textSize="@dimen/btn_save_text_size"
                 android:textStyle="bold"

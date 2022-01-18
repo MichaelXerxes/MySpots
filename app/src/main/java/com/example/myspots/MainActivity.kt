@@ -17,5 +17,9 @@ class MainActivity : AppCompatActivity() {
             val intent =Intent(this,AddNewPlace::class.java)
             startActivity(intent)
         }
+        binding?.flCameraBtn?.setOnClickListener {
+            val intent=Intent(this,ImagesAdapter::class.java)
+            startActivity(intent)
+        }
     }
 }
