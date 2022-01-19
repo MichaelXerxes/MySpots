@@ -1,4 +1,4 @@
-package com.example.myspots
+package com.example.myspots.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -14,11 +14,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         binding?.flactionBtn?.setOnClickListener {
-            val intent =Intent(this,AddNewPlace::class.java)
+            val intent =Intent(this, AddNewPlace::class.java)
             startActivity(intent)
         }
         binding?.flCameraBtn?.setOnClickListener {
-            val intent=Intent(this,ImagesAdapter::class.java)
+            val intent=Intent(this, ImagesAdapter::class.java)
             startActivity(intent)
         }
     }

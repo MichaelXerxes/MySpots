@@ -1,4 +1,4 @@
-package com.example.myspots
+package com.example.myspots.activities
 
 import android.Manifest
 import android.app.Activity
@@ -11,7 +11,6 @@ import android.provider.MediaStore
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.myspots.databinding.ActivityAddNewPlaceBinding
 import com.example.myspots.databinding.ActivityImagesAdapterBinding
 
 class ImagesAdapter : AppCompatActivity() {
