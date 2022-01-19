@@ -31,33 +31,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/main_content_padding">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ImageViewID"
                 android:layout_width="@dimen/add_picture_image_size_for_camera"
                 android:layout_height="@dimen/add_picture_image_size_for_camera"
-                android:padding="@dimen/image_padding_size"
                 android:layout_marginTop="@dimen/image_margin_top"
+                android:padding="@dimen/image_padding_size"
                 android:scaleType="centerCrop"
                 android:src="@drawable/camera"
-                app:civ_border_width="2dp"
                 app:civ_border_color="#FF000000"
+                app:civ_border_width="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <Button
                 android:id="@+id/btn_CameraImageID"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginBottom="144dp"
-                android:text="@string/save_camera_btn_text"
+
+                android:layout_marginTop="12dp"
                 android:background="@drawable/btn_save_bacground"
                 android:padding="@dimen/btn_camera_padding_size"
+                android:text="@string/save_camera_btn_text"
                 android:textSize="@dimen/btn_camera_text_size"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ImageViewID" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/appCImageViewId"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="32dp"
+
+
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_CameraImageID" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

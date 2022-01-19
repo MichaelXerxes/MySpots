@@ -1,5 +1,6 @@
 package com.example.myspots
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.ActivityNotFoundException
@@ -8,6 +9,7 @@ import android.media.audiofx.Equalizer
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.provider.Settings
 import android.view.View
 import android.widget.Toast
@@ -18,6 +20,7 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import java.io.IOException
 import java.security.Permission
 import java.text.SimpleDateFormat
 import java.util.*
@@ -89,9 +92,12 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
         ).withListener(object : MultiplePermissionsListener{
             override fun onPermissionsChecked(report:MultiplePermissionsReport){
                 if(report!!.areAllPermissionsGranted()){
-                    Toast.makeText(this@AddNewPlace,
-                    "Storage READ / WRITE permission are granted. You can select an image from Gallery  ",
-                    Toast.LENGTH_SHORT).show()
+                  //  Toast.makeText(this@AddNewPlace,
+                  //  "Storage READ / WRITE permission are granted. You can select an image from Gallery  ",
+                  //  Toast.LENGTH_SHORT).show()
+                    val galleryIntent=Intent(Intent.ACTION_PICK,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                    startActivityForResult(galleryIntent,GALLERY)
                 }
             }
             override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest> ,
@@ -118,5 +124,30 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
                 dialog.dismiss()
         }.show()
 
+    }
+
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode==Activity.RESULT_OK){
+            if(requestCode== GALLERY){
+                if(data!=null){
+                    val contentInfo=data.data
+                    try {
+                        val selectedImageBitmap=MediaStore.Images.Media.
+                        getBitmap(this.contentResolver, contentInfo)
+                        binding?.appCompatImageView?.setImageBitmap(selectedImageBitmap)
+                    }catch (e: IOException){
+                        e.printStackTrace()
+                          Toast.makeText(this@AddNewPlace,
+                          "Failed to load Image!",
+                         Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    companion object{
+        private const val GALLERY=1
     }
 }
