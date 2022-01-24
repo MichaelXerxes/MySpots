@@ -67,8 +67,8 @@ class ImagesAdapter : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode==Activity.RESULT_OK){
             if(requestCode== CAMERA_REQUEST_CODE){
-                val thumBnail:Bitmap=data!!.extras!!.get("data") as Bitmap
-                binding?.appCImageViewId?.setImageBitmap(thumBnail)
+                val thumBm:Bitmap=data!!.extras!!.get("data") as Bitmap
+                binding?.appCImageViewId?.setImageBitmap(thumBm)
             }
         }
     }

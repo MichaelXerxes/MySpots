@@ -17,8 +17,10 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.myspots.R
+import com.example.myspots.database.DataBaseHandler
 
 import com.example.myspots.databinding.ActivityAddNewPlaceBinding
+import com.example.myspots.models.SpotModel
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -34,6 +36,11 @@ import java.util.*
 class AddNewPlace : AppCompatActivity(), View.OnClickListener {
     private var binding:ActivityAddNewPlaceBinding?=null
     private var calendar=Calendar.getInstance()
+
+    private var saveImageToInternalStorage:Uri?=null
+    private var mLatitude:Double=0.0
+    private var mLongitude:Double=0.0
+
     private lateinit var dateSetListener:DatePickerDialog.OnDateSetListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,13 +58,15 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
             calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth)
             updateDateEditText()
         }
+        updateDateEditText()//call method to populate calendar on start
         binding?.etDate?.setOnClickListener(this)
         binding?.tvAddImageID?.setOnClickListener(this)
+        binding?.btnSave22?.setOnClickListener(this)
 
     }
 
     override fun onClick(v: View?) {
-        when(v!!.id){
+        when(v!!.id) {
             R.id.et_date ->{
                 DatePickerDialog(this@AddNewPlace,dateSetListener,
                     calendar.get(Calendar.YEAR),
@@ -65,7 +74,7 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
                     calendar.get(Calendar.DAY_OF_MONTH)).show()
 
             }
-            R.id.tv_add_imageID ->{
+            R.id.btn_Save22 ->{
                 val pictureDialog=AlertDialog.Builder(this)
                 pictureDialog.setTitle("Select Action")
                 val pictureDialogItems= arrayOf("Select photo from Gallery","Capture photo from Camera")
@@ -80,6 +89,40 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
                     }
                 }
                 pictureDialog.show()
+            }
+            R.id.saveAllBtn ->{
+                Toast.makeText(this, "Lol Lol Lol", Toast.LENGTH_SHORT).show()
+                when{
+                    binding?.etTitle?.text.isNullOrEmpty() ->{
+                        Toast.makeText(this, "Please enter title", Toast.LENGTH_SHORT).show()
+                    }
+                    binding?.etDescription?.text.isNullOrEmpty() ->{
+                        Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show()
+                    }
+                    binding?.etLocation?.text.isNullOrEmpty() ->{
+                        Toast.makeText(this, "Please select location", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    saveImageToInternalStorage==null ->{
+                        Toast.makeText(this, "Please add image", Toast.LENGTH_SHORT).show()
+                    }else ->{
+                        val mySpot=SpotModel(0,binding?.etTitle?.text.toString(),
+                            saveImageToInternalStorage.toString(),
+                            binding?.etDescription?.text.toString(),
+                            binding?.etDate?.text.toString(),
+                            binding?.etLocation?.text.toString(),
+                            mLatitude,mLongitude)
+                    val dbHandler=DataBaseHandler(this)
+                    val addMySpotResult=dbHandler.addMySpots(mySpot)
+
+                    if(addMySpotResult > 0){
+                        Toast.makeText(this@AddNewPlace,"The Spot details are inserted successfuly ",
+                            Toast.LENGTH_SHORT).show()
+                        finish();
+                    }
+
+                    }
+                }
             }
         }
 
@@ -161,8 +204,10 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
                         val selectedImageBitmap=MediaStore.Images.Media.
                         getBitmap(this.contentResolver, contentInfo)
                         ///save Image
-                        val savedImage=saveImageToInternalStorgae(selectedImageBitmap)
-                        Log.e("Saved Image","Path::$savedImage")
+                        saveImageToInternalStorage=saveImageToInternalStorgae(selectedImageBitmap)
+
+
+                        Log.e("Saved Image","Path::$saveImageToInternalStorage")
 
 
                         binding?.appCompatImageView?.setImageBitmap(selectedImageBitmap)
@@ -186,10 +231,10 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
     private fun saveImageToInternalStorgae(bitmap: Bitmap):Uri{
         val wrapper =ContextWrapper(applicationContext)
         var file=wrapper.getDir(IMAGE_DIRECTORY,Context.MODE_PRIVATE)
-        file= File(file,"${UUID.randomUUID()}.jpg")
+        file= File(file,"${UUID.randomUUID()}.png")
         try {
             val stream:OutputStream=FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream)
+            bitmap.compress(Bitmap.CompressFormat.PNG,100,stream)
             stream.flush()
             stream.close()
 

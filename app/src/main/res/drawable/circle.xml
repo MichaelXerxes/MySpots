@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="?android:attr/textColorHighlightInverse"/>
+    <stroke android:dashWidth="@dimen/cardview_default_elevation"
+        />
+    <gradient android:centerColor="@color/white"
+        android:startColor="@color/white"
+        android:endColor="@color/white"/>
+
+</shape>

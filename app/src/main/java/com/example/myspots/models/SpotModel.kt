@@ -1,4 +1,12 @@
 package com.example.myspots.models
 
-class SpotModel {
-}
+data class SpotModel (
+    val id:Int,
+    val title:String,
+    val image:String,
+    val description:String,
+    val date:String,
+    val location:String,
+    val latitude:Double,
+    val longitude:Double
+        )

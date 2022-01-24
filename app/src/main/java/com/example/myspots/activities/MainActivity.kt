@@ -10,6 +10,9 @@ class MainActivity : AppCompatActivity() {
     private var binding:ActivityMainBinding?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val intentDemo=Intent(this,StartDemoActivity::class.java)
+        startActivity(intentDemo)
+
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
