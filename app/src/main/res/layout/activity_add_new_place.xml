@@ -140,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="68dp"
                 android:gravity="center"
-                android:onClick="onClick"
+
                 android:textColor="@color/black"
                 android:text="@string/btn_save_text"
                 android:textSize="@dimen/btn_save_text_size"
@@ -151,11 +151,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/appCompatImageView" />
             <Button
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/saveAllBtn"
                 android:gravity="center"
-                android:onClick="onClick"
+
                 android:text="SAVE 2"
                 android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="parent"

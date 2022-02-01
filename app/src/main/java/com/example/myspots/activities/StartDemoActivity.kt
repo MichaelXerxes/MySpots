@@ -19,9 +19,14 @@ import com.example.myspots.databinding.DemoWhiteBinding
 class StartDemoActivity : AppCompatActivity() {
     var binding:ActivityStartDemoBinding?=null
     var mergeBindind:DemoWhiteBinding?=null
+    var view:View?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityStartDemoBinding.inflate(layoutInflater)
+        mergeBindind= DemoWhiteBinding.inflate(layoutInflater)
+        val view1: View =layoutInflater.inflate(R.layout.demo_white,null)
+        view=view1
+
         setContentView(binding?.root)
         binding?.btnBOUNCE?.setOnClickListener {
 
@@ -43,24 +48,30 @@ class StartDemoActivity : AppCompatActivity() {
                    // start()
                 //}
 
-                val animation4=AnimationUtils.loadAnimation(this,R.anim.explosion).apply {
-                    duration=5100
-                    interpolator=AccelerateDecelerateInterpolator()
-                }
+              //  val animation4=AnimationUtils.loadAnimation(this,R.anim.explosion).apply {
+              //      duration=5100
+               //     interpolator=AccelerateDecelerateInterpolator()
+               // }
 
-                binding?.llDemoId?.startAnimation(animation4)
+                binding?.btnExplosion?.startAnimation(animation3)
                                 },3000)
 
 
-            handler.postDelayed({
-                val view1: View =layoutInflater.inflate(R.layout.demo_white,null)
-                mergeBindind= DemoWhiteBinding.inflate(layoutInflater)
-                setContentView(view1)
-                                },12100)
+          //  handler.postDelayed({
+
+
+               // setContentView(view)
+                             //   },6100)
 
         }
         binding?.btnFinishBounce?.setOnClickListener {
             finish()
         }
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        binding=null
+        mergeBindind=null
+        view=null
     }
 }

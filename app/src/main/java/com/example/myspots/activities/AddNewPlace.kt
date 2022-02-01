@@ -8,14 +8,17 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.example.myspots.R
 import com.example.myspots.database.DataBaseHandler
 
@@ -59,10 +62,16 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
             updateDateEditText()
         }
         updateDateEditText()//call method to populate calendar on start
+        ///
         binding?.etDate?.setOnClickListener(this)
         binding?.tvAddImageID?.setOnClickListener(this)
         binding?.btnSave22?.setOnClickListener(this)
+        ///
+        binding?.saveAllBtn?.setOnClickListener {
+            //btnSaveSettings()
 
+            Toast.makeText(this,"hahahahahahahahah",Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onClick(v: View?) {
@@ -74,8 +83,9 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
                     calendar.get(Calendar.DAY_OF_MONTH)).show()
 
             }
-            R.id.btn_Save22 ->{
-                val pictureDialog=AlertDialog.Builder(this)
+            R.id.tv_add_imageID ->{
+                Toast.makeText(this@AddNewPlace,"**********************",Toast.LENGTH_SHORT).show()
+               val pictureDialog=AlertDialog.Builder(this)
                 pictureDialog.setTitle("Select Action")
                 val pictureDialogItems= arrayOf("Select photo from Gallery","Capture photo from Camera")
                 pictureDialog.setItems(pictureDialogItems){
@@ -90,42 +100,46 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
                 }
                 pictureDialog.show()
             }
-            R.id.saveAllBtn ->{
-                Toast.makeText(this, "Lol Lol Lol", Toast.LENGTH_SHORT).show()
-                when{
-                    binding?.etTitle?.text.isNullOrEmpty() ->{
-                        Toast.makeText(this, "Please enter title", Toast.LENGTH_SHORT).show()
-                    }
-                    binding?.etDescription?.text.isNullOrEmpty() ->{
-                        Toast.makeText(this, "Please enter description", Toast.LENGTH_SHORT).show()
-                    }
-                    binding?.etLocation?.text.isNullOrEmpty() ->{
-                        Toast.makeText(this, "Please select location", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                    saveImageToInternalStorage==null ->{
-                        Toast.makeText(this, "Please add image", Toast.LENGTH_SHORT).show()
-                    }else ->{
-                        val mySpot=SpotModel(0,binding?.etTitle?.text.toString(),
-                            saveImageToInternalStorage.toString(),
-                            binding?.etDescription?.text.toString(),
-                            binding?.etDate?.text.toString(),
-                            binding?.etLocation?.text.toString(),
-                            mLatitude,mLongitude)
-                    val dbHandler=DataBaseHandler(this)
-                    val addMySpotResult=dbHandler.addMySpots(mySpot)
+            R.id.btn_Save22->{
+                btnSaveSettings()
+               // Toast.makeText(this@AddNewPlace, "Lol Lol Lol", Toast.LENGTH_SHORT).show()
 
-                    if(addMySpotResult > 0){
-                        Toast.makeText(this@AddNewPlace,"The Spot details are inserted successfuly ",
-                            Toast.LENGTH_SHORT).show()
-                        finish();
-                    }
-
-                    }
-                }
             }
         }
+    }
 
+    private fun btnSaveSettings(){
+        when{
+            binding?.etTitle?.text.isNullOrEmpty() ->{
+                Toast.makeText(this@AddNewPlace, "Please enter title", Toast.LENGTH_SHORT).show()
+            }
+            binding?.etDescription?.text.isNullOrEmpty() ->{
+                Toast.makeText(this@AddNewPlace, "Please enter description", Toast.LENGTH_SHORT).show()
+            }
+            binding?.etLocation?.text.isNullOrEmpty() ->{
+                Toast.makeText(this@AddNewPlace, "Please select location", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            saveImageToInternalStorage==null ->{
+                Toast.makeText(this@AddNewPlace, "Please add image", Toast.LENGTH_SHORT).show()
+            }else ->{
+            val mySpot=SpotModel(0,binding?.etTitle?.text.toString(),
+                saveImageToInternalStorage.toString(),
+                binding?.etDescription?.text.toString(),
+                binding?.etDate?.text.toString(),
+                binding?.etLocation?.text.toString(),
+                mLatitude,mLongitude)
+            val dbHandler=DataBaseHandler(this)
+            val addMySpotResult=dbHandler.addMySpots(mySpot)
+
+            if(addMySpotResult > 0){
+                Toast.makeText(this@AddNewPlace,"The Spot details are inserted successfuly ",
+                    Toast.LENGTH_SHORT).show()
+                finish();
+            }
+
+        }
+        }
     }
     private fun updateDateEditText(){
         val format="dd.MM.yyyy"
@@ -201,6 +215,7 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
                 if(data!=null){
                     val contentInfo=data.data
                     try {
+                        @Suppress("DEPRECATION")
                         val selectedImageBitmap=MediaStore.Images.Media.
                         getBitmap(this.contentResolver, contentInfo)
                         ///save Image
@@ -221,20 +236,26 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
             }else if (requestCode== CAMERA){
                 val thumBnail:Bitmap=data!!.extras!!.get("data") as Bitmap
 
-                val savedImage=saveImageToInternalStorgae(thumBnail)
-                Log.e("Saved Image","Path::$savedImage")
-                binding?.appCompatImageView?.setImageBitmap(thumBnail)
+                saveImageToInternalStorage=saveImageToInternalStorgae(thumBnail)
+                Log.e("Saved Image","Path::$saveImageToInternalStorage")
+
+                binding?.appCompatImageView?.setImageBitmap(thumBnail)  // Set to the imageView.
 
             }
         }
+        else if (resultCode == Activity.RESULT_CANCELED) {
+            Log.e("Cancelled", "Cancelled")
+        }
     }
     private fun saveImageToInternalStorgae(bitmap: Bitmap):Uri{
+        //val drawable = ContextCompat.getDrawable(applicationContext,drawableId)
+        //val bitmap1 = (drawable as BitmapDrawable).bitmap
         val wrapper =ContextWrapper(applicationContext)
         var file=wrapper.getDir(IMAGE_DIRECTORY,Context.MODE_PRIVATE)
-        file= File(file,"${UUID.randomUUID()}.png")
+        file= File(file,"${UUID.randomUUID()}.jpg")
         try {
             val stream:OutputStream=FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.PNG,100,stream)
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream)
             stream.flush()
             stream.close()
 
@@ -249,5 +270,14 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
         private const val GALLERY=1
         private const val CAMERA=2
         private const val IMAGE_DIRECTORY="MySpots"
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding=null
+        calendar= Calendar.getInstance()
+        saveImageToInternalStorage=null
+        mLatitude=0.0
+        mLongitude=0.0
     }
 }
