@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:background="@color/col2"
+    android:gravity="center_horizontal"
+    android:layout_height="wrap_content">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/rvImageID"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="@dimen/image_margin_top"
+        android:padding="@dimen/image_padding_size"
+        android:scaleType="centerCrop"
+        android:src="@drawable/camera"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/col1"
+        android:layout_height="wrap_content"
+        android:padding="2dp">
+        <TextView
+            android:id="@+id/rvIDID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID"
+            android:textColor="@color/white"
+            android:textSize="28sp"/>
+        <TextView
+            android:id="@+id/rvTitleID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:hint="Title"
+            android:textColor="@color/white"
+            android:textSize="28sp"/>
+        <TextView
+            android:id="@+id/rvDescriptionID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textColor="@color/white"
+            android:textSize="28sp"/>
+        <TextView
+            android:id="@+id/rvDateID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textColor="@color/white"
+            android:textSize="28sp"/>
+        <TextView
+            android:id="@+id/rvLocationID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            android:textColor="@color/white"
+            android:textSize="28sp"/>
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="2dp"
+            android:background="@color/col5"
+            android:layout_marginTop="2dp">
+            <TextView
+                android:id="@+id/rvLatitudeID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="La"
+                android:layout_weight="1"
+                android:textSize="28sp"/>
+            <TextView
+                android:id="@+id/rvLongitudeID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LI"
+                android:layout_weight="1"
+                android:textSize="28sp"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

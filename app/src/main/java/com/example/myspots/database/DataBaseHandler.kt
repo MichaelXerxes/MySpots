@@ -27,8 +27,8 @@ class DataBaseHandler(context: Context):
           }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val CREATE_TABLE_MY_SPOTS=("CREATE TABLE"+ TABLE_MY_SPOTS+"("
-                +KEY_DATE+"INTEGER PRIMARY KEY,"
+        val CREATE_TABLE_MY_SPOTS=("CREATE TABLE "+ TABLE_MY_SPOTS+"("
+                + KEY_ID+" INTEGER PRIMARY KEY,"
                 +KEY_TITLE+" TEXT,"
                 +KEY_IMAGE+" TEXT,"
                 + KEY_DESCRIPTION+" TEXT,"
@@ -36,7 +36,7 @@ class DataBaseHandler(context: Context):
                 + KEY_LOCATION+" TEXT,"
                 + KEY_LATITUDE+" TEXT,"
                 + KEY_LONGITUDE+" TEXT)")
-        db?.execSQL(CREATE_TABLE_MY_SPOTS)
+        db!!.execSQL(CREATE_TABLE_MY_SPOTS)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {

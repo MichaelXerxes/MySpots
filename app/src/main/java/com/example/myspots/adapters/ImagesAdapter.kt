@@ -1,4 +1,4 @@
-package com.example.myspots.activities
+package com.example.myspots.adapters
 
 import android.Manifest
 import android.app.Activity

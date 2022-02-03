@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.myspots.adapters.ImagesAdapter
 import com.example.myspots.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -20,10 +21,14 @@ class MainActivity : AppCompatActivity() {
         binding?.flactionBtn?.setOnClickListener {
             val intent =Intent(this, AddNewPlace::class.java)
             startActivity(intent)
-            Toast.makeText(this,"hahahahah2222222222222ahahahah", Toast.LENGTH_SHORT).show()
+
         }
         binding?.flCameraBtn?.setOnClickListener {
             val intent=Intent(this, ImagesAdapter::class.java)
+            startActivity(intent)
+        }
+        binding?.fllistBtn?.setOnClickListener {
+            val intent=Intent(this, SpotsListActivity::class.java)
             startActivity(intent)
         }
 
