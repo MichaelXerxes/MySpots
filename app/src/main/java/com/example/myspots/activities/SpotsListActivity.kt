@@ -5,6 +5,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myspots.R
@@ -22,8 +26,14 @@ class SpotsListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivitySpotsListBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+        setSupportActionBar(binding?.toolBarSpotsList)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding?.toolBarSpotsList?.setNavigationOnClickListener {
+            onBackPressed()
+        }
 
-      // getSpotsfromLocalDB()
+
+      getSpotsfromLocalDB()
 
 
 
@@ -37,7 +47,50 @@ class SpotsListActivity : AppCompatActivity() {
                 getSpotsfromLocalDB()
             }else{
                 Log.e("Activity", "Cancelled or Back Pressed")
+                Toast.makeText(this@SpotsListActivity,
+                    "Start Activity and Nothing here",
+                    Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater :MenuInflater=menuInflater
+        inflater.inflate(R.menu.menu_for_list,menu)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding?.toolBarSpotsList?.setNavigationOnClickListener {
+            onBackPressed()
+        }
+
+        return true
+        //super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.menuOPt1 ->{
+                val intent =Intent(this, AddNewPlace::class.java)
+                startActivity(intent)
+                finish()
+
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val info =item.menuInfo as AdapterView.AdapterContextMenuInfo
+        return  when(item.itemId) {
+            R.id.menuOPt1 ->{
+                val intent =Intent(this, AddNewPlace::class.java)
+                startActivity(intent)
+                finish()
+
+                true
+            }
+
+           else -> super.onContextItemSelected(item)
         }
     }
     private fun getSpotsfromLocalDB(){
@@ -47,6 +100,9 @@ class SpotsListActivity : AppCompatActivity() {
         if(mySpotsList.size>0){
             for (i in mySpotsList){
                 setupSpotsStatusRecyclerView(mySpotsList)
+                Toast.makeText(this@SpotsListActivity,
+                    "Eureka jest tutaj",
+                    Toast.LENGTH_SHORT).show()
             }
 
         }else{

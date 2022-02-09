@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         binding?.flactionBtn?.setOnClickListener {
             val intent =Intent(this, AddNewPlace::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, ADD_PLACE_ACTIVITY_REQUEST_CODE)
 
         }
         binding?.flCameraBtn?.setOnClickListener {
@@ -29,12 +29,15 @@ class MainActivity : AppCompatActivity() {
         }
         binding?.fllistBtn?.setOnClickListener {
             val intent=Intent(this, SpotsListActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, ADD_PLACE_ACTIVITY_REQUEST_CODE)
         }
 
     }
     override fun onDestroy() {
         super.onDestroy()
         binding=null
+    }
+    companion object{
+        private const val ADD_PLACE_ACTIVITY_REQUEST_CODE = 1
     }
 }

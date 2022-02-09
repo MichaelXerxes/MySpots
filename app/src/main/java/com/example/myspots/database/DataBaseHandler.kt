@@ -63,14 +63,11 @@ class DataBaseHandler(context: Context):
     fun getMySpotsList():ArrayList<SpotModel>{
         val db =this.writableDatabase
         val mySpotsLits=ArrayList<SpotModel>()
-        var cursor:Cursor?=null
+        //var cursor:Cursor?=null
         val selectQuery=("SELECT * FROM $TABLE_MY_SPOTS")
         try {
-            cursor=db.rawQuery(selectQuery,null)
-        }catch (e:SQLiteException){
-            db.execSQL(selectQuery)
-            return ArrayList()
-        }
+            val cursor:Cursor=db.rawQuery(selectQuery,null)
+
             if(cursor.moveToFirst()){
                 do {
                     val place=SpotModel(
@@ -90,7 +87,10 @@ class DataBaseHandler(context: Context):
             }
             cursor.close()
 
-
+        }catch (e:SQLiteException){
+            db.execSQL(selectQuery)
+            return ArrayList()
+        }
 
         return mySpotsLits
     }

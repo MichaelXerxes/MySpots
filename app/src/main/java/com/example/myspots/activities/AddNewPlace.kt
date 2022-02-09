@@ -133,8 +133,9 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
             val addMySpotResult=dbHandler.addMySpots(mySpot)
 
             if(addMySpotResult > 0){
-                Toast.makeText(this@AddNewPlace,"The Spot details are inserted successfuly ",
-                    Toast.LENGTH_SHORT).show()
+              //  Toast.makeText(this@AddNewPlace,"The Spot details are inserted successfuly ",
+                  //  Toast.LENGTH_SHORT).show()
+                      setResult(Activity.RESULT_OK)
                 finish();
             }
 
