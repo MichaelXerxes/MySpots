@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myspots.activities.AddNewPlace
 import com.example.myspots.activities.SpotsListActivity
+import com.example.myspots.database.DataBaseHandler
 import com.example.myspots.databinding.ActivityAddNewPlaceBinding.inflate
 import com.example.myspots.databinding.ActivitySpotsListBinding
 import com.example.myspots.databinding.SlotSpotBinding
@@ -79,6 +80,15 @@ open class MySpotsAdapter(
         activity.startActivityForResult(intent,requestCode)
         notifyItemChanged(position)// notify adapter
 
+    }
+    fun removeAt(position: Int){
+        val dbHandler=DataBaseHandler(context)
+        val isDelete=dbHandler.deleteSpotModel(list[position])
+
+        if (isDelete>0){
+            list.removeAt(position)
+            notifyItemRemoved(position)
+        }
     }
 
     class SpotViewHolder(mergeBinding:SlotSpotBinding)

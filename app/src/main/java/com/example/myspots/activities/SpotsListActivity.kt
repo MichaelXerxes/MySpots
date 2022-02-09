@@ -20,6 +20,7 @@ import com.example.myspots.database.DataBaseHandler
 import com.example.myspots.databinding.ActivitySpotsListBinding
 import com.example.myspots.models.SpotModel
 import com.example.myspots.utils.SwipeToEditCallback
+import com.example.myspots.utils.SwipeToLeftToDeleteCallback
 
 class SpotsListActivity : AppCompatActivity() {
     private var binding:ActivitySpotsListBinding?=null
@@ -36,6 +37,7 @@ class SpotsListActivity : AppCompatActivity() {
         binding?.toolBarSpotsList?.setNavigationOnClickListener {
             onBackPressed()
         }
+
 
 
       getSpotsfromLocalDB()
@@ -85,7 +87,6 @@ class SpotsListActivity : AppCompatActivity() {
         }
     }
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val info =item.menuInfo as AdapterView.AdapterContextMenuInfo
         return  when(item.itemId) {
             R.id.menuOPt1 ->{
                 val intent =Intent(this, AddNewPlace::class.java)
@@ -138,16 +139,28 @@ class SpotsListActivity : AppCompatActivity() {
             }
         })
 
-        //  Swipe  handler
-        val swipeHandler=object :SwipeToEditCallback(this){
+        //  Swipe  Edit handler
+        val swipeEditHandler=object :SwipeToEditCallback(this){
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter=binding?.rvSpotsList?.adapter as MySpotsAdapter
                 adapter.notifyEditItem(this@SpotsListActivity,viewHolder.adapterPosition,
                 ADD_PLACE_ACTIVITY_REQUEST_CODE)
             }
         }
-        val editItemTouchHelper=ItemTouchHelper(swipeHandler)
+        val editItemTouchHelper=ItemTouchHelper(swipeEditHandler)
         editItemTouchHelper.attachToRecyclerView(binding?.rvSpotsList)
+
+        //  Swipe  Delete handler
+        val swipeDeleteHandler=object :SwipeToLeftToDeleteCallback(this){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter=binding?.rvSpotsList?.adapter as MySpotsAdapter
+              adapter.removeAt(viewHolder.adapterPosition)
+                // update current list
+                getSpotsfromLocalDB()
+            }
+        }
+        val deleteItemTouchHelper=ItemTouchHelper(swipeDeleteHandler)
+        deleteItemTouchHelper.attachToRecyclerView(binding?.rvSpotsList)
 
     }
     override fun onDestroy() {

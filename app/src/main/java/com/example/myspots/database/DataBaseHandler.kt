@@ -94,5 +94,32 @@ class DataBaseHandler(context: Context):
 
         return mySpotsLits
     }
+fun updateCurrentSpotModel(spotModel:SpotModel):Int{
+    val db=this.writableDatabase
+    val contentValues=ContentValues()
 
+    contentValues.put(KEY_TITLE,spotModel.title)
+    contentValues.put(KEY_IMAGE,spotModel.image)
+    contentValues.put(KEY_DESCRIPTION,spotModel.description)
+    contentValues.put(KEY_DATE,spotModel.date)
+    contentValues.put(KEY_LOCATION,spotModel.location)
+    contentValues.put(KEY_LONGITUDE,spotModel.longitude)
+    contentValues.put(KEY_LATITUDE,spotModel.latitude)
+
+    val success=db.update(TABLE_MY_SPOTS,
+    contentValues, KEY_ID+"="+spotModel.id,null)
+
+    db.close()
+
+    return success
+}
+    fun deleteSpotModel(spotModel:SpotModel):Int{
+        val db=this.writableDatabase
+        val success=db.delete(TABLE_MY_SPOTS,
+        KEY_ID+"="+spotModel.id,null)
+
+        db.close()
+
+        return success
+    }
 }

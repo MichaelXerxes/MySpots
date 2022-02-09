@@ -21,9 +21,12 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.myspots.R
 import com.example.myspots.database.DataBaseHandler
-
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
 import com.example.myspots.databinding.ActivityAddNewPlaceBinding
 import com.example.myspots.models.SpotModel
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -57,6 +60,11 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
         binding?.toolBarAddPlace?.setNavigationOnClickListener {
             onBackPressed()
         }
+        if (!Places.isInitialized()){
+            Places.initialize(this@AddNewPlace,
+            resources.getString(R.string.google_maps_api_key))
+        }
+
         if(intent.hasExtra(SpotsListActivity.EXTRA_SPOT_DETAILS)){
             mSpotsDetails=intent.getSerializableExtra(SpotsListActivity.EXTRA_SPOT_DETAILS) as SpotModel
         }
@@ -84,6 +92,7 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
         binding?.etDate?.setOnClickListener(this)
         binding?.tvAddImageID?.setOnClickListener(this)
         binding?.btnSave22?.setOnClickListener(this)
+        binding?.etLocation?.setOnClickListener(this)
         ///
         binding?.saveAllBtn?.setOnClickListener {
             //btnSaveSettings()
@@ -123,41 +132,73 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
                // Toast.makeText(this@AddNewPlace, "Lol Lol Lol", Toast.LENGTH_SHORT).show()
 
             }
+            R.id.et_location ->{
+                try {
+                    val fields= listOf(
+                        Place.Field.ID,Place.Field.NAME,Place.Field.LAT_LNG,
+                        Place.Field.ADDRESS
+                    )
+                    //Start  autocplite intent
+                    val intent=Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN,fields)
+                        .build(this@AddNewPlace)
+                    startActivityForResult(intent, SPOT_AUTOCOMPLETE_REQUEST_CODE)
+
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
+
+            }
         }
     }
 
-    private fun btnSaveSettings(){
-        when{
-            binding?.etTitle?.text.isNullOrEmpty() ->{
+    private fun btnSaveSettings() {
+        when {
+            binding?.etTitle?.text.isNullOrEmpty() -> {
                 Toast.makeText(this@AddNewPlace, "Please enter title", Toast.LENGTH_SHORT).show()
             }
-            binding?.etDescription?.text.isNullOrEmpty() ->{
-                Toast.makeText(this@AddNewPlace, "Please enter description", Toast.LENGTH_SHORT).show()
+            binding?.etDescription?.text.isNullOrEmpty() -> {
+                Toast.makeText(this@AddNewPlace, "Please enter description", Toast.LENGTH_SHORT)
+                    .show()
             }
-            binding?.etLocation?.text.isNullOrEmpty() ->{
+            binding?.etLocation?.text.isNullOrEmpty() -> {
                 Toast.makeText(this@AddNewPlace, "Please select location", Toast.LENGTH_SHORT)
                     .show()
             }
-            saveImageToInternalStorage==null ->{
+            saveImageToInternalStorage == null -> {
                 Toast.makeText(this@AddNewPlace, "Please add image", Toast.LENGTH_SHORT).show()
-            }else ->{
-            val mySpot=SpotModel(0,binding?.etTitle?.text.toString(),
-                saveImageToInternalStorage.toString(),
-                binding?.etDescription?.text.toString(),
-                binding?.etDate?.text.toString(),
-                binding?.etLocation?.text.toString(),
-                mLatitude,mLongitude)
-            val dbHandler=DataBaseHandler(this)
-            val addMySpotResult=dbHandler.addMySpots(mySpot)
-
-            if(addMySpotResult > 0){
-              //  Toast.makeText(this@AddNewPlace,"The Spot details are inserted successfuly ",
-                  //  Toast.LENGTH_SHORT).show()
-                      setResult(Activity.RESULT_OK)
-                finish();
             }
+            else -> {
+                // save or update spot model
+                val mySpot = SpotModel(
+                    if (mSpotsDetails == null) 0 else
+                        mSpotsDetails!!.id, binding?.etTitle?.text.toString(),
+                    //      ***      //
+                    saveImageToInternalStorage.toString(),
+                    binding?.etDescription?.text.toString(),
+                    binding?.etDate?.text.toString(),
+                    binding?.etLocation?.text.toString(),
+                    mLatitude, mLongitude
+                )
+                val dbHandler = DataBaseHandler(this)
+                if (mSpotsDetails == null) {
+                    val addMySpotResult = dbHandler.addMySpots(mySpot)
+                    if (addMySpotResult > 0) {
+                        setResult(Activity.RESULT_OK)
+                        finish();
 
-        }
+                    } else {
+                        val updateMySpotResult = dbHandler.updateCurrentSpotModel(
+                            mySpot)
+                        if (updateMySpotResult > 0) {
+                            setResult(Activity.RESULT_OK)
+                            finish();
+
+                        }
+                    }
+
+
+                }
+            }
         }
     }
     private fun updateDateEditText(){
@@ -260,6 +301,13 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
 
                 binding?.appCompatImageView?.setImageBitmap(thumBnail)  // Set to the imageView.
 
+            }else if(requestCode== SPOT_AUTOCOMPLETE_REQUEST_CODE){
+                val place:Place=Autocomplete.getPlaceFromIntent(data!!)
+                //set to location with google design
+                binding?.etLocation?.setText(place.address.toString())
+                mLatitude=place.latLng!!.latitude
+                mLongitude=place.latLng!!.longitude
+
             }
         }
         else if (resultCode == Activity.RESULT_CANCELED) {
@@ -289,6 +337,7 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
         private const val GALLERY=1
         private const val CAMERA=2
         private const val IMAGE_DIRECTORY="MySpots"
+        private const val SPOT_AUTOCOMPLETE_REQUEST_CODE=3
     }
 
     override fun onDestroy() {
