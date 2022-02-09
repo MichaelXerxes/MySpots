@@ -13,9 +13,10 @@ import com.example.myspots.models.SpotModel
 
 open class MySpotsAdapter(
     private val context: Context,
-
     private val list: ArrayList<SpotModel>
 ) :RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+    private var onCListener:OnClickListenerNew?=null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return SpotViewHolder(
             //LayoutInflater.from(context).inflate(
@@ -40,6 +41,13 @@ open class MySpotsAdapter(
             holder.image.setImageURI(Uri.parse(model.image))
         }
 
+
+        holder.itemView.setOnClickListener{
+            if(onCListener!=null){
+                onCListener!!.onClick(position, model)
+            }
+        }
+
     }
 
     override fun getItemCount(): Int {
@@ -48,11 +56,21 @@ open class MySpotsAdapter(
     override fun getItemViewType(position: Int): Int {
         return list[position].id    //.viewType !!!
     }
+
+
     companion object{
         const val VIEW_TYPE_ONE=1
         const val VIEW_TYPE_TWO=2
 
     }
+    fun setOnClickListenerNew(onClickListenerNew: OnClickListenerNew){
+        this.onCListener=onClickListenerNew
+    }
+
+    interface OnClickListenerNew{
+        fun onClick(position: Int,model: SpotModel)
+    }
+
     class SpotViewHolder(mergeBinding:SlotSpotBinding)
         :RecyclerView.ViewHolder(mergeBinding.root){
             val idNum=mergeBinding.rvIDID

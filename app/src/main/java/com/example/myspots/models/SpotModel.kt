@@ -1,5 +1,7 @@
 package com.example.myspots.models
 
+import java.io.Serializable
+
 data class SpotModel (
     val id:Int,
     val title:String,
@@ -9,4 +11,4 @@ data class SpotModel (
     val location:String,
     val latitude:Double,
     val longitude:Double
-        )
+        ):Serializable

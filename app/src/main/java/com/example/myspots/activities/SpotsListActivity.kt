@@ -12,6 +12,7 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myspots.R
+import com.example.myspots.adapters.ImagesAdapter
 import com.example.myspots.adapters.MySpotsAdapter
 import com.example.myspots.database.DataBaseHandler
 import com.example.myspots.databinding.ActivitySpotsListBinding
@@ -125,6 +126,14 @@ class SpotsListActivity : AppCompatActivity() {
         adapterList= MySpotsAdapter(this,spList)
         binding?.rvSpotsList?.adapter=adapterList
 
+        adapterList!!.setOnClickListenerNew(object: MySpotsAdapter.OnClickListenerNew{
+            override fun onClick(position: Int, model: SpotModel) {
+                val intent=Intent(this@SpotsListActivity, SpotDetailsActivity::class.java)
+                intent.putExtra(EXTRA_SPOT_DETAILS,model)
+                startActivity(intent)
+            }
+        })
+
 
     }
     override fun onDestroy() {
@@ -139,5 +148,6 @@ class SpotsListActivity : AppCompatActivity() {
     }
     companion object{
         private const val ADD_PLACE_ACTIVITY_REQUEST_CODE = 1
+         var EXTRA_SPOT_DETAILS="spot details"
     }
 }
