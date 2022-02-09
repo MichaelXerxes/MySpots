@@ -1,10 +1,13 @@
 package com.example.myspots.adapters
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myspots.activities.AddNewPlace
 import com.example.myspots.activities.SpotsListActivity
 import com.example.myspots.databinding.ActivityAddNewPlaceBinding.inflate
 import com.example.myspots.databinding.ActivitySpotsListBinding
@@ -69,6 +72,13 @@ open class MySpotsAdapter(
 
     interface OnClickListenerNew{
         fun onClick(position: Int,model: SpotModel)
+    }
+    fun notifyEditItem(activity: Activity,position: Int,requestCode:Int){
+        val intent=Intent(context,AddNewPlace::class.java)
+        intent.putExtra(SpotsListActivity.EXTRA_SPOT_DETAILS,list[position])
+        activity.startActivityForResult(intent,requestCode)
+        notifyItemChanged(position)// notify adapter
+
     }
 
     class SpotViewHolder(mergeBinding:SlotSpotBinding)

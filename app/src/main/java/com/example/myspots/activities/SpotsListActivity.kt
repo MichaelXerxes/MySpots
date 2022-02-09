@@ -10,18 +10,22 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myspots.R
 import com.example.myspots.adapters.ImagesAdapter
 import com.example.myspots.adapters.MySpotsAdapter
 import com.example.myspots.database.DataBaseHandler
 import com.example.myspots.databinding.ActivitySpotsListBinding
 import com.example.myspots.models.SpotModel
+import com.example.myspots.utils.SwipeToEditCallback
 
 class SpotsListActivity : AppCompatActivity() {
     private var binding:ActivitySpotsListBinding?=null
     private var adapterList:MySpotsAdapter?=null
     private var spotsList:ArrayList<SpotModel>?=null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,6 +138,16 @@ class SpotsListActivity : AppCompatActivity() {
             }
         })
 
+        //  Swipe  handler
+        val swipeHandler=object :SwipeToEditCallback(this){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter=binding?.rvSpotsList?.adapter as MySpotsAdapter
+                adapter.notifyEditItem(this@SpotsListActivity,viewHolder.adapterPosition,
+                ADD_PLACE_ACTIVITY_REQUEST_CODE)
+            }
+        }
+        val editItemTouchHelper=ItemTouchHelper(swipeHandler)
+        editItemTouchHelper.attachToRecyclerView(binding?.rvSpotsList)
 
     }
     override fun onDestroy() {

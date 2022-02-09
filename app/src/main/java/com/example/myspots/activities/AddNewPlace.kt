@@ -44,6 +44,9 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
     private var mLatitude:Double=0.0
     private var mLongitude:Double=0.0
 
+
+    private var mSpotsDetails:SpotModel?=null
+
     private lateinit var dateSetListener:DatePickerDialog.OnDateSetListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +57,9 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
         binding?.toolBarAddPlace?.setNavigationOnClickListener {
             onBackPressed()
         }
+        if(intent.hasExtra(SpotsListActivity.EXTRA_SPOT_DETAILS)){
+            mSpotsDetails=intent.getSerializableExtra(SpotsListActivity.EXTRA_SPOT_DETAILS) as SpotModel
+        }
 
         dateSetListener=DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
             calendar.set(Calendar.YEAR,year)
@@ -62,6 +68,18 @@ class AddNewPlace : AppCompatActivity(), View.OnClickListener {
             updateDateEditText()
         }
         updateDateEditText()//call method to populate calendar on start
+        ///
+        if(mSpotsDetails!=null){
+            supportActionBar!!.title= "Edit Your Spot"
+            binding!!.etTitle.setText(mSpotsDetails!!.title)
+            binding!!.etDescription.setText(mSpotsDetails!!.description)
+            binding!!.etDate.setText(mSpotsDetails!!.date)
+            binding!!.etLocation.setText(mSpotsDetails!!.location)
+            mLatitude=mSpotsDetails!!.latitude
+            mLongitude=mSpotsDetails!!.longitude
+            binding!!.appCompatImageView.setImageURI(Uri.parse(mSpotsDetails!!.image))
+        }
+
         ///
         binding?.etDate?.setOnClickListener(this)
         binding?.tvAddImageID?.setOnClickListener(this)
