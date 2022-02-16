@@ -26,7 +26,8 @@
         app:layout_constraintTop_toBottomOf="@+id/toolBarSpotDetails">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/col3">
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageViewDetailsID"
                 android:layout_width="match_parent"
@@ -47,6 +48,7 @@
                 android:layout_marginEnd="5dp"
                 android:textColor="@color/black"
                 android:textSize="22sp"
+                android:background="@color/col4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.533"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,6 +61,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="5dp"
+                android:background="@color/col4"
                 android:textColor="@color/black"
                 android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -66,10 +69,75 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_titleD"
                 tools:text="Description" />
+            <TextView
+                android:id="@+id/tv_DataD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/col4"
+                android:layout_marginEnd="5dp"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.533"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_descriptionD"
+                android:text="Data"/>
+            <TextView
+                android:id="@+id/tv_LocationD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:background="@color/col4"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="5dp"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.533"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_DataD"
+                android:text="Location"/>
+            <LinearLayout
+                android:id="@+id/ll_D"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@color/col1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_LocationD">
+                <TextView
+                    android:id="@+id/tv_longiD"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:padding="5dp"
+                    android:paddingStart="15dp"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    android:layout_weight="1"
+                    android:text="Longitude"/>
+                <TextView
+                    android:id="@+id/tv_latitD"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:padding="5dp"
+                    android:paddingStart="15dp"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+
+                    android:layout_weight="1"
+                    android:text="Latitude"/>
+            </LinearLayout>
+
+
             <Button
                 android:id="@+id/btn_view_on_map"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:background="@color/quantum_bluegrey400"
@@ -79,7 +147,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.533"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_descriptionD"
+                app:layout_constraintTop_toBottomOf="@id/ll_D"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

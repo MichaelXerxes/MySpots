@@ -7,4 +7,7 @@
     <string name="btn_save_text">Save Image</string>
     <string name="camera_tool_bar_title">Camera Images Section</string>
     <string name="save_camera_btn_text">SAVE</string>
+
+
+    <string name="google_maps_api_key">AIzaSyAJbQDbsjn4Iz7_YlAOFrMgayM6WH1s6-s</string>
 </resources>
