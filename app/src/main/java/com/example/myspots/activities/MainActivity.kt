@@ -14,7 +14,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val intentDemo=Intent(this,StartDemoActivity::class.java)
         startActivity(intentDemo)
+        setBindingForBtns()
 
+
+    }
+    private fun setBindingForBtns(){
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
@@ -31,7 +35,9 @@ class MainActivity : AppCompatActivity() {
             val intent=Intent(this, SpotsListActivity::class.java)
             startActivityForResult(intent, ADD_PLACE_ACTIVITY_REQUEST_CODE)
         }
+        binding?.flgoogleMapBtn?.setOnClickListener {
 
+        }
     }
     override fun onDestroy() {
         super.onDestroy()

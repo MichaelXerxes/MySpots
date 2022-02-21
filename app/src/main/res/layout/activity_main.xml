@@ -33,5 +33,13 @@
       app:maxImageSize="38dp"
       android:layout_margin="@dimen/standard_1"
       app:srcCompat="@drawable/list"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:id="@+id/flgoogleMapBtn"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center|center_horizontal"
+      app:maxImageSize="42dp"
+      android:layout_margin="@dimen/standard_1"
+      app:srcCompat="@drawable/map1"/>
 
 </FrameLayout>
